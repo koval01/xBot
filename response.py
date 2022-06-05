@@ -8,9 +8,10 @@ import logging as log
 
 
 class Response:
-    def __init__(self, app: Client, message: Message) -> None:
+    def __init__(self, app: Client, message: Message, reply: bool = False) -> None:
         self.app = app
         self.message = message
+        self.reply = reply
 
     @property
     async def _process(self) -> None:
@@ -46,9 +47,9 @@ class Response:
                 rand_float(0, 2) + rand_float(2, 8)
                 if rand_float(0, 1) > 0.8 else 0)
 
-    @staticmethod
-    def _need_response() -> bool:
-        return True if rand_float(0, 1) > 0.7 else False
+    @property
+    def _need_response(self) -> bool:
+        return True if (rand_float(0, 1) >= 0.75 or self.reply) else False
 
     @property
     async def begin(self) -> None:
