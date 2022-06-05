@@ -15,16 +15,16 @@ app = Client(
 log.basicConfig(level=log.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 
 
-@app.on_message(filters.text & filters.group)
-async def main_handler(client, message):
-    log.info("Call %s" % main_handler.__name__)
-    return await Response(app, message).begin
-
-
 @app.on_message(filters.text & filters.group & filters.reply)
 async def reply_handler(client, message):
     log.info("Call %s" % reply_handler.__name__)
     return await Response(app, message, reply=True).begin
+
+
+@app.on_message(filters.text & filters.group)
+async def main_handler(client, message):
+    log.info("Call %s" % main_handler.__name__)
+    return await Response(app, message).begin
 
 
 @app.on_message(filters.private & filters.chat(int(getenv("OWNER_ID"))))
