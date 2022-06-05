@@ -26,7 +26,7 @@ class Response:
         try:
             if self._need_response:
                 await self._call_sleep(prepare=True)
-                await self.app.mark_chat_unread(message.chat.id)
+                await self.app.read_chat_history(message.chat.id)
                 await self._call_sleep(prepare=False)
                 # actions after sleep
                 await self.app.send_chat_action(
@@ -44,8 +44,8 @@ class Response:
                         if rand_float(0, 1) > 0.95 else 0) \
             if prepare \
             else await sleep(
-                rand_float(0, 2) + rand_float(2, 8)
-                if rand_float(0, 1) > 0.8 else 0)
+                rand_float(0, 3) + rand_float(2, 8)
+                if rand_float(0, 1) > 0.7 else 0)
 
     @property
     def _need_response(self) -> bool:
