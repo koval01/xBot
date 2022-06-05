@@ -15,13 +15,19 @@ app = Client(
 log.basicConfig(level=log.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 
 
-@app.on_message(filters.text & filters.group & filters.reply)
+@app.on_message(filters.regex("Валера живой?") & filters.group & ~filters.me)
+async def ping_handler(client, message):
+    log.info("Call %s" % ping_handler.__name__)
+    return await message.reply("Да, я живой.")
+
+
+@app.on_message(filters.text & filters.group & filters.reply & ~filters.me)
 async def reply_handler(client, message):
     log.info("Call %s" % reply_handler.__name__)
     return await Response(app, message, reply=True).begin
 
 
-@app.on_message(filters.text & filters.group)
+@app.on_message(filters.text & filters.group & ~filters.me)
 async def main_handler(client, message):
     log.info("Call %s" % main_handler.__name__)
     return await Response(app, message).begin
